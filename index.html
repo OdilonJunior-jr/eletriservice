@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EletriService Engenharia | Link Bio</title>
+  <meta name="description" content="EletriService Engenharia: construção civil, energia solar, instalações elétricas e projetos de iluminação em Uberaba e região." />
+
+  <style>
+    :root {
+      --azul-base: #155CA8;
+      --azul-claro: #1E70C7;
+      --azul-medio: #0D4387;
+      --azul-profundo: #082B5B;
+      --azul-escuro: #061B3C;
+      --linha: rgba(133, 187, 255, .34);
+      --linha-forte: rgba(96, 164, 255, .52);
+      --amarelo: #F6B700;
+      --texto: #F7FAFF;
+      --muted: rgba(239, 246, 255, .82);
+      --soft: rgba(239, 246, 255, .67);
+      --shadow: 0 18px 42px rgba(0, 0, 0, .22);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      min-height: 100%;
+      margin: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--texto);
+      background:
+        radial-gradient(circle at 18% 10%, rgba(54, 129, 255, .24), transparent 28%),
+        linear-gradient(135deg, #0E356C 0%, #124F98 45%, #0A2A58 100%);
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .mobile-video-bg {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      filter: saturate(1.08) contrast(1.02);
+      z-index: -4;
+      pointer-events: none;
+      transition: opacity .35s ease;
+      background: #0E356C;
+    }
+
+    body.video-ready .mobile-video-bg {
+      opacity: .70;
+    }
+
+    .mobile-tint {
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      pointer-events: none;
+      background:
+        linear-gradient(180deg, rgba(7, 27, 60, .46), rgba(7, 27, 60, .55)),
+        radial-gradient(circle at 50% 0%, rgba(30, 112, 199, .18), transparent 35%);
+    }
+
+    .desktop-shell {
+      width: 100%;
+      min-height: 100svh;
+    }
+
+    .video-panel {
+      display: none;
+    }
+
+    .right-panel {
+      min-height: 100svh;
+    }
+
+    .page {
+      width: min(100%, 500px);
+      margin: 0 auto;
+      padding: 18px 16px 22px;
+    }
+
+    .bio {
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .logo {
+      display: block;
+      width: min(88%, 330px);
+      margin: 0 auto 16px;
+      filter: drop-shadow(0 10px 22px rgba(0, 0, 0, .24));
+    }
+
+    .title {
+      margin: 0 auto;
+      max-width: 430px;
+      text-align: center;
+      font-size: clamp(1.9rem, 7vw, 2.55rem);
+      line-height: 1.04;
+      letter-spacing: -.04em;
+      font-weight: 720;
+      text-wrap: balance;
+    }
+
+    .title strong {
+      display: block;
+      margin-top: 3px;
+      color: var(--amarelo);
+      font-weight: 820;
+    }
+
+    .sub {
+      max-width: 410px;
+      margin: 12px auto 18px;
+      text-align: center;
+      color: var(--muted);
+      font-size: .96rem;
+      line-height: 1.38;
+      font-weight: 400;
+    }
+
+    .sub b {
+      color: #FFD45F;
+      font-weight: 700;
+    }
+
+    .hero {
+      margin: 0 0 18px;
+      border-radius: 22px;
+      overflow: hidden;
+      border: 1px solid rgba(112, 176, 255, .48);
+      background: rgba(7, 27, 60, .34);
+      box-shadow: var(--shadow);
+    }
+
+    .hero img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1552 / 618;
+      object-fit: cover;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 0 0 12px;
+      font-size: 1rem;
+      line-height: 1.1;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -.01em;
+    }
+
+    .section-title::before,
+    .section-title::after {
+      content: "";
+      width: min(18vw, 56px);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(137, 190, 255, .66));
+    }
+
+    .section-title::after {
+      background: linear-gradient(90deg, rgba(137, 190, 255, .66), transparent);
+    }
+
+    .services {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .service-card {
+      min-height: 90px;
+      padding: 10px 5px 8px;
+      border-radius: 16px;
+      border: 1px solid #5c93d9;
+      background: linear-gradient(180deg, #154f97, #0b3972);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      text-align: center;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 10px 24px rgba(0,0,0,.16);
+      transition: none;
+      cursor: default;
+    }
+
+    .service-card svg {
+      width: 29px;
+      height: 29px;
+      color: var(--amarelo);
+      stroke-width: 2.1;
+      flex: 0 0 auto;
+    }
+
+    .service-card span {
+      font-size: .66rem;
+      line-height: 1.10;
+      font-weight: 600;
+      color: rgba(255,255,255,.96);
+      text-wrap: balance;
+    }
+
+    .contacts {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .contact-link {
+      min-height: 66px;
+      padding: 6px 4px 5px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-align: center;
+      border-radius: 14px;
+      transition: transform .2s ease, background .2s ease;
+    }
+
+    .contact-link:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,.055);
+    }
+
+    .contact-link img {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      display: block;
+      filter: drop-shadow(0 8px 14px rgba(0,0,0,.20));
+    }
+
+    .contact-link .label {
+      display: block;
+      color: #fff;
+      font-size: .80rem;
+      line-height: 1.08;
+      font-weight: 700;
+    }
+
+
+    .cta {
+      min-height: 52px;
+      width: 100%;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #FFD04D, #F6B700);
+      color: #07142C;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      font-size: .98rem;
+      font-weight: 800;
+      box-shadow: 0 14px 30px rgba(0,0,0,.20);
+      margin: 4px 0 18px;
+      transition: transform .2s ease, filter .2s ease;
+    }
+
+    .cta:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.04);
+    }
+
+    .cta img {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+    }
+
+    .footer {
+      margin-top: 10px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(137, 190, 255, .16);
+      text-align: center;
+    }
+
+    .footer-logo {
+      width: 82px;
+      height: auto;
+      opacity: .96;
+      display: inline-block;
+      filter: drop-shadow(0 6px 14px rgba(0,0,0,.20));
+    }
+
+    .socials-outside {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin: 14px auto 0;
+    }
+
+    .socials-outside a {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: rgba(21, 92, 168, .26);
+      border: 1px solid rgba(137, 190, 255, .32);
+      box-shadow: 0 12px 26px rgba(0,0,0,.16);
+      transition: transform .2s ease, background .2s ease;
+      backdrop-filter: blur(6px);
+    }
+
+    .socials-outside a:hover {
+      transform: translateY(-2px);
+      background: rgba(21, 92, 168, .38);
+    }
+
+    .socials-outside img {
+      width: 26px;
+      height: 26px;
+      object-fit: contain;
+      display: block;
+    }
+    .contact-button,
+    button.contact-link {
+      appearance: none;
+      -webkit-appearance: none;
+      background: transparent !important;
+      border: 0 !important;
+      outline: 0;
+      box-shadow: none !important;
+      font: inherit;
+      color: inherit;
+      width: 100%;
+      cursor: pointer;
+    }
+
+    .contact-button:focus,
+    .contact-button:active,
+    button.contact-link:focus,
+    button.contact-link:active {
+      background: transparent !important;
+      outline: none;
+      box-shadow: none !important;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      transform: translate(-50%, 18px);
+      z-index: 99;
+      min-width: 150px;
+      padding: 11px 16px;
+      border-radius: 999px;
+      background: rgba(5, 22, 52, .94);
+      border: 1px solid rgba(137, 190, 255, .36);
+      color: #fff;
+      font-size: .88rem;
+      font-weight: 700;
+      text-align: center;
+      box-shadow: 0 18px 38px rgba(0,0,0,.28);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .22s ease, transform .22s ease;
+      backdrop-filter: blur(8px);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    @media (max-width: 520px) {
+      .page {
+        min-height: 100svh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: clamp(8px, 1.4vh, 14px) 10px clamp(10px, 1.6vh, 16px);
+      }
+
+      .logo {
+        width: min(82%, 290px);
+        margin-bottom: clamp(8px, 1.3vh, 14px);
+      }
+
+      .title {
+        font-size: clamp(1.54rem, 7.4vw, 2.06rem);
+        line-height: 1.02;
+      }
+
+      .sub {
+        font-size: clamp(.78rem, 3.5vw, .90rem);
+        line-height: 1.28;
+        margin-top: clamp(7px, 1.1vh, 10px);
+        margin-bottom: clamp(10px, 1.5vh, 15px);
+      }
+
+      .hero {
+        margin-bottom: clamp(10px, 1.5vh, 15px);
+        border-radius: 18px;
+      }
+
+      .section-title {
+        margin-bottom: clamp(7px, 1.1vh, 10px);
+        font-size: clamp(.88rem, 3.6vw, .98rem);
+      }
+
+      .services {
+        gap: 6px;
+        margin-bottom: clamp(11px, 1.8vh, 15px);
+      }
+
+      .service-card {
+        min-height: clamp(76px, 13.2vh, 90px);
+        padding: 8px 4px 7px;
+        border-radius: 14px;
+      }
+
+      .service-card svg {
+        width: clamp(22px, 6vw, 27px);
+        height: clamp(22px, 6vw, 27px);
+      }
+
+      .service-card span {
+        font-size: clamp(.52rem, 2.35vw, .61rem);
+      }
+
+      .contacts {
+        gap: 6px;
+        margin-bottom: clamp(9px, 1.5vh, 13px);
+      }
+
+      .contact-link {
+        min-height: clamp(52px, 9.2vh, 60px);
+        padding: 5px 3px;
+      }
+
+      .contact-link img {
+        width: clamp(25px, 6.6vw, 30px);
+        height: clamp(25px, 6.6vw, 30px);
+      }
+
+      .contact-link .label {
+        font-size: clamp(.62rem, 2.8vw, .70rem);
+      }
+
+      .cta {
+        min-height: clamp(44px, 7.3vh, 50px);
+        font-size: clamp(.86rem, 3.5vw, .98rem);
+        margin-bottom: clamp(8px, 1.4vh, 12px);
+      }
+
+      .footer {
+        margin-top: clamp(6px, 1vh, 9px);
+        padding-top: clamp(7px, 1.2vh, 10px);
+      }
+
+      .footer-logo {
+        width: clamp(60px, 18vw, 76px);
+      }
+
+      .socials-outside {
+        margin-top: clamp(8px, 1.3vh, 12px);
+      }
+
+      .socials-outside a {
+        width: clamp(36px, 9vw, 40px);
+        height: clamp(36px, 9vw, 40px);
+      }
+
+      .socials-outside img {
+        width: clamp(22px, 6vw, 25px);
+        height: clamp(22px, 6vw, 25px);
+      }
+    }
+
+    @media (max-width: 520px) and (max-height: 740px) {
+      .logo { width: min(76%, 270px); }
+      .title { font-size: clamp(1.38rem, 6.8vw, 1.82rem); }
+      .sub { font-size: .76rem; margin-bottom: 8px; }
+      .hero { margin-bottom: 9px; }
+      .service-card { min-height: 70px; gap: 5px; }
+      .service-card svg { width: 22px; height: 22px; }
+      .service-card span { font-size: .50rem; }
+      .contact-link { min-height: 48px; gap: 4px; }
+      .contact-link img { width: 24px; height: 24px; }
+      .cta { min-height: 42px; margin-bottom: 7px; }
+      .footer { display: none; }
+    }
+
+    @media (max-width: 360px) and (max-height: 680px) {
+      .page { justify-content: flex-start; }
+      .logo { width: min(72%, 250px); }
+      .title { font-size: 1.32rem; }
+      .sub { font-size: .72rem; }
+      .service-card { min-height: 66px; }
+      .contact-link { min-height: 45px; }
+    }
+
+
+    
+    @media (min-width: 980px) {
+      .mobile-video-bg,
+      .mobile-tint {
+        display: none;
+      }
+
+      body {
+        background: linear-gradient(135deg, #123D77 0%, #155CA8 46%, #0B3D7E 100%);
+      }
+
+      .desktop-shell {
+        display: grid;
+        grid-template-columns: 1fr 440px;
+        min-height: 100vh;
+        width: 100%;
+      }
+
+      .video-panel {
+        display: block;
+        position: relative;
+        min-height: 100vh;
+        overflow: hidden;
+        background: #0B2C5B;
+      }
+
+      .side-video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center center;
+        opacity: 1;
+        filter: none;
+        transform: none;
+      }
+
+      .video-panel::after,
+      .video-panel::before {
+        content: none;
+      }
+
+      .right-panel {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background:
+          radial-gradient(circle at 50% 0%, rgba(75, 153, 255, .16), transparent 28%),
+          linear-gradient(180deg, #124E94 0%, #0E3975 48%, #0B2C5B 100%);
+        box-shadow: -10px 0 28px rgba(0,0,0,.12);
+      }
+
+      .page {
+        width: 100%;
+        height: 100vh;
+        max-height: 100vh;
+        margin: 0;
+        padding: clamp(16px, 2.4vh, 24px) 18px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .bio {
+        width: min(100%, 400px);
+        margin: 0 auto;
+      }
+
+      .logo {
+        width: min(88%, 300px);
+        margin-bottom: 12px;
+      }
+
+      .title {
+        font-size: clamp(1.82rem, 2.45vw, 2.16rem);
+        max-width: 390px;
+      }
+
+      .sub {
+        font-size: .88rem;
+        margin-top: 8px;
+        margin-bottom: 14px;
+        max-width: 360px;
+      }
+
+      .hero {
+        margin-bottom: 14px;
+      }
+
+      .service-card {
+        min-height: 74px;
+      }
+
+      .contact-link {
+        min-height: 58px;
+      }
+
+      .cta {
+        min-height: 46px;
+        margin-bottom: 12px;
+      }
+
+      .footer {
+        padding-top: 9px;
+      }
+
+      .socials-outside {
+        margin-top: 10px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .page {
+        width: 100%;
+        padding: 16px 14px 22px;
+      }
+
+      .logo {
+        width: min(90%, 320px);
+        margin-bottom: 16px;
+      }
+
+      .title {
+        font-size: clamp(1.86rem, 8.4vw, 2.42rem);
+      }
+
+      .sub {
+        font-size: .94rem;
+        margin-bottom: 18px;
+      }
+
+      .hero {
+        border-radius: 20px;
+      }
+
+      .services,
+      .contacts {
+        gap: 8px;
+      }
+
+      .service-card {
+        min-height: 94px;
+        padding: 10px 4px 8px;
+        border-radius: 15px;
+      }
+
+      .service-card svg {
+        width: 27px;
+        height: 27px;
+      }
+
+      .service-card span {
+        font-size: .61rem;
+      }
+
+      .contact-link {
+        min-height: 60px;
+      }
+
+      .contact-link img {
+        width: 30px;
+        height: 30px;
+      }
+
+      .contact-link .label {
+        font-size: .70rem;
+      }
+
+
+      .footer-logo {
+        width: 78px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .page {
+        padding: 12px 10px 18px;
+      }
+
+      .services,
+      .contacts {
+        gap: 5px;
+      }
+
+      .service-card {
+        min-height: 88px;
+        border-radius: 14px;
+      }
+
+      .service-card span {
+        font-size: .56rem;
+      }
+
+      .contact-link .label {
+        font-size: .66rem;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+  <video class="mobile-video-bg" autoplay muted defaultMuted loop playsinline webkit-playsinline x5-playsinline preload="auto" disablepictureinpicture controlslist="nodownload nofullscreen noplaybackrate" poster="assets/hero.png">
+    <source src="assets/eletrica.mp4" type="video/mp4">
+  </video>
+  <div class="mobile-tint" aria-hidden="true"></div>
+
+  <div class="desktop-shell">
+    <aside class="video-panel" aria-hidden="true">
+      <video class="side-video" autoplay muted defaultMuted loop playsinline webkit-playsinline x5-playsinline preload="auto" disablepictureinpicture controlslist="nodownload nofullscreen noplaybackrate" poster="assets/hero.png">
+        <source src="assets/eletrica.mp4" type="video/mp4">
+      </video>
+    </aside>
+
+    <section class="right-panel">
+      <main class="page">
+        <div class="bio" aria-label="Link bio EletriService Engenharia">
+          <header>
+            <img class="logo" src="assets/logo-white.png" alt="EletriService Engenharia" />
+
+            <h1 class="title">
+              Energia &amp; Construção Civil
+              <strong>Soluções integradas</strong>
+            </h1>
+
+            <p class="sub">
+              Projetos e execução com qualidade, confiança e atendimento personalizado em <b>Uberaba e região.</b>
+            </p>
+          </header>
+
+          <figure class="hero">
+            <img src="assets/hero.png" alt="Equipe EletriService diante de residência com energia solar">
+          </figure>
+
+          <h2 class="section-title">O que fazemos</h2>
+
+          <nav class="services" aria-label="Serviços da EletriService">
+            <div class="service-card">
+              <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                <path d="M10 54h44M16 54V22h16v32M32 54V10h18v44" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M22 30h4M22 38h4M22 46h4M39 18h4M39 27h4M39 36h4M39 45h4" stroke="currentColor" stroke-linecap="round"/>
+              </svg>
+              <span>Engenharia &amp; Construção Civil</span>
+            </div>
+
+            <div class="service-card">
+              <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                <path d="M15 37h34l5 15H10l5-15Z" stroke="currentColor" stroke-linejoin="round"/>
+                <path d="M20 37l-3 15M32 37v15M44 37l3 15M14 45h36" stroke="currentColor" stroke-linecap="round"/>
+                <path d="M32 8v8M14 20l6 6M50 20l-6 6M9 34h7M48 34h7" stroke="currentColor" stroke-linecap="round"/>
+                <path d="M22 31a10 10 0 0 1 20 0" stroke="currentColor" stroke-linecap="round"/>
+              </svg>
+              <span>Energia Solar</span>
+            </div>
+
+            <div class="service-card">
+              <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                <path d="M23 8v18M41 8v18M17 26h30" stroke="currentColor" stroke-linecap="round"/>
+                <path d="M21 26v12a11 11 0 0 0 22 0V26M32 49v7" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>Instalações Elétricas</span>
+            </div>
+
+            <div class="service-card">
+              <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                <path d="M22 30a10 10 0 1 1 20 0c0 5-3 7-5 10-1.2 1.8-1.7 3-1.8 5h-6.4c-.1-2-.6-3.2-1.8-5-2-3-5-5-5-10Z" stroke="currentColor" stroke-linejoin="round"/>
+                <path d="M27 51h10M29 57h6M32 6v6M13 17l5 5M51 17l-5 5M10 32h7M47 32h7" stroke="currentColor" stroke-linecap="round"/>
+              </svg>
+              <span>Projetos de iluminação</span>
+            </div>
+          </nav>
+
+          <h2 class="section-title">Canais de contato</h2>
+
+          <nav class="contacts" aria-label="Contatos EletriService">
+            <a class="contact-link" href="https://wa.me/5534997987473?text=Ol%C3%A1%2C%20gostaria%20de%20solicitar%20um%20or%C3%A7amento%20da%20EletriService." target="_blank" rel="noopener">
+              <img src="assets/whatsapp.png" alt="">
+              <span class="label">WhatsApp</span>
+            </a>
+
+            <button class="contact-link contact-button" type="button" data-copy-email="contato@eletriservice.com.br" aria-label="Copiar e-mail da EletriService">
+              <img src="assets/gmail.png" alt="">
+              <span class="label">E-mail</span>
+            </button>
+
+            <a class="contact-link" href="https://eletriservice.com.br/" target="_blank" rel="noopener">
+              <img src="assets/site.png" alt="">
+              <span class="label">Site</span>
+            </a>
+          </nav>
+
+          <a class="cta" href="https://wa.me/5534997987473?text=Ol%C3%A1%2C%20gostaria%20de%20solicitar%20um%20or%C3%A7amento%20da%20EletriService." target="_blank" rel="noopener">
+            <img src="assets/raio.png" alt="">
+            Solicitar orçamento
+          </a>
+
+          <footer class="footer">
+            <img class="footer-logo" src="assets/logo-white.png" alt="EletriService Engenharia">
+          </footer>
+        </div>
+
+        <nav class="socials-outside" aria-label="Redes sociais EletriService">
+          <a href="https://www.instagram.com/eletri_service/" target="_blank" rel="noopener" aria-label="Instagram"><img src="assets/instagram.png" alt=""></a>
+          <a href="https://web.facebook.com/eletriservice.pag?_rdc=1&_rdr#" target="_blank" rel="noopener" aria-label="Facebook"><img src="assets/facebook.png" alt=""></a>
+        </nav>
+      </main>
+    </section>
+
+    <div class="toast" id="copyToast" role="status" aria-live="polite">E-mail copiado</div>
+  </div>
+  <script>
+    (function () {
+      const videos = Array.from(document.querySelectorAll('video'));
+
+      function prepare(video) {
+        video.muted = true;
+        video.defaultMuted = true;
+        video.loop = true;
+        video.autoplay = true;
+        video.playsInline = true;
+        video.controls = false;
+
+        video.setAttribute('muted', '');
+        video.setAttribute('autoplay', '');
+        video.setAttribute('loop', '');
+        video.setAttribute('playsinline', '');
+        video.setAttribute('webkit-playsinline', '');
+        video.setAttribute('x5-playsinline', '');
+        video.removeAttribute('controls');
+
+        video.addEventListener('playing', function () {
+          document.body.classList.add('video-ready');
+        }, { once: false });
+
+        video.addEventListener('ended', function () {
+          video.currentTime = 0;
+          const attempt = video.play();
+          if (attempt && typeof attempt.catch === 'function') attempt.catch(function () {});
+        });
+
+        video.addEventListener('pause', function () {
+          if (!document.hidden) {
+            const attempt = video.play();
+            if (attempt && typeof attempt.catch === 'function') attempt.catch(function () {});
+          }
+        });
+      }
+
+      function playAll() {
+        videos.forEach(function (video) {
+          prepare(video);
+          const attempt = video.play();
+          if (attempt && typeof attempt.catch === 'function') attempt.catch(function () {});
+        });
+      }
+
+      function showToast(message) {
+        const toast = document.getElementById('copyToast');
+        if (!toast) return;
+        toast.textContent = message;
+        toast.classList.add('show');
+        clearTimeout(window.__copyToastTimer);
+        window.__copyToastTimer = setTimeout(function () {
+          toast.classList.remove('show');
+        }, 1800);
+      }
+
+      function fallbackCopy(text) {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.setAttribute('readonly', '');
+        textarea.style.position = 'fixed';
+        textarea.style.left = '-9999px';
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+          document.execCommand('copy');
+          showToast('E-mail copiado');
+        } catch (e) {
+          showToast(text);
+        }
+        document.body.removeChild(textarea);
+      }
+
+      document.addEventListener('click', function (event) {
+        const button = event.target.closest('[data-copy-email]');
+        if (!button) return;
+
+        event.preventDefault();
+        const email = button.getAttribute('data-copy-email') || 'contato@eletriservice.com.br';
+
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(email)
+            .then(function () { showToast('E-mail copiado'); })
+            .catch(function () { fallbackCopy(email); });
+        } else {
+          fallbackCopy(email);
+        }
+      });
+
+      playAll();
+      document.addEventListener('DOMContentLoaded', playAll);
+      window.addEventListener('load', playAll);
+      document.addEventListener('visibilitychange', function () {
+        if (!document.hidden) playAll();
+      });
+
+      ['touchstart', 'click', 'scroll'].forEach(function (eventName) {
+        window.addEventListener(eventName, playAll, { passive: true, once: false });
+      });
+
+      setInterval(function () {
+        videos.forEach(function (video) {
+          if (video.paused || video.ended) {
+            const attempt = video.play();
+            if (attempt && typeof attempt.catch === 'function') attempt.catch(function () {});
+          }
+        });
+      }, 2200);
+    })();
+  </script>
+
+</body>
+</html>
